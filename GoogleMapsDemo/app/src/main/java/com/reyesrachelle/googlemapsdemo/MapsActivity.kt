@@ -55,5 +55,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         // Light mode, maps with less features
+
+        // Map padding
+        map.setPadding(0, 0, 300, 0)
     }
 }
