@@ -13,7 +13,7 @@ import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +38,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        map = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val losAngeles = LatLng(34.05447469544268, -118.2380027484249)
+        map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles"))
+
+        // There are 20 zoom levels
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
+
+        map.uiSettings.apply {
+            isZoomControlsEnabled = true // This shows buttons
+//            isZoomGesturesEnabled = false
+//            isScrollGesturesEnabled = false // Disable moving around the map
+//            isMyLocationButtonEnabled = true // We need to enable our location layer
+        }
+
+        // Light mode, maps with less features
     }
 }
