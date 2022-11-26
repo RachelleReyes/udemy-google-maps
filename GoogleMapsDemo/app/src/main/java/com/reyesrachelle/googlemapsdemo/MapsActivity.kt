@@ -87,7 +87,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Light mode, maps with less features
 
         // Map padding
-        map.setPadding(0, 0, 300, 0)
+//        map.setPadding(0, 0, 300, 0)
+        setMapStyle(map)
     }
 
     private fun setMapStyle(googleMap: GoogleMap) {
