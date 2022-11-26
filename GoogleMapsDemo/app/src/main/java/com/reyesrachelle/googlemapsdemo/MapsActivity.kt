@@ -2,7 +2,6 @@ package com.reyesrachelle.googlemapsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -11,7 +10,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
 
@@ -19,6 +17,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private val typeAndStyle by lazy { TypeAndStyle() }
+    private val cameraAndViewport by lazy { CameraAndViewport() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,23 +38,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.normal_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_NORMAL
-            }
-            R.id.hybrid_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_HYBRID
-            }
-            R.id.satellite_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_SATELLITE
-            }
-            R.id.terrain_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_TERRAIN
-            }
-            R.id.none_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_NONE
-            }
-        }
+        typeAndStyle.setMapType(item, map)
         return true
     }
 
@@ -75,7 +59,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles"))
 
         // There are 20 zoom levels
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
 
         map.uiSettings.apply {
             isZoomControlsEnabled = true // This shows buttons
@@ -88,23 +73,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Map padding
 //        map.setPadding(0, 0, 300, 0)
-        setMapStyle(map)
-    }
-
-    private fun setMapStyle(googleMap: GoogleMap) {
-        try {
-            val success = googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    this,
-                    R.raw.style
-                )
-            )
-
-            if (!success) {
-                Log.d("Maps", "Failed to add Style")
-            }
-        } catch (e: Exception) {
-            Log.d("Maps", e.toString())
-        }
+        typeAndStyle.setMapStyle(map, this)
     }
 }
