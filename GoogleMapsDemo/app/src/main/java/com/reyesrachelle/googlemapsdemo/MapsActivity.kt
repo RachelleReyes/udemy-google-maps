@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -73,8 +74,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         typeAndStyle.setMapStyle(map, this)
         lifecycleScope.launch {
             delay(4000L)
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
-            map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles), 2000, object: GoogleMap.CancelableCallback {
+                override fun onFinish() {
+                    Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onCancel() {
+                    Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+                }
+            })
+//            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
+//            map.animateCamera(CameraUpdateFactory.scrollBy(2000f, 0f), 2000, null)
+//            map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100), 2000, null)
+//            map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
         }
     }
 }
