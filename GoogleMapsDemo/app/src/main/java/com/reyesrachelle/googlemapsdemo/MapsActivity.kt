@@ -68,30 +68,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         map.uiSettings.apply {
             isZoomControlsEnabled = true // This shows buttons
-//            isZoomGesturesEnabled = false
-//            isScrollGesturesEnabled = false // Disable moving around the map
-//            isMyLocationButtonEnabled = true // We need to enable our location layer
         }
 
-        // Light mode, maps with less features
-
-        // Map padding
-//        map.setPadding(0, 0, 300, 0)
         typeAndStyle.setMapStyle(map, this)
-
-//        map.setMinZoomPreference(15f)
-//        map.setMaxZoomPreference(17f)
-
-//        lifecycleScope.launch {
-//            delay(4000L)
-//            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
-//        }
-
         lifecycleScope.launch {
             delay(4000L)
-//            map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
             map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
-//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
             map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
         }
     }
