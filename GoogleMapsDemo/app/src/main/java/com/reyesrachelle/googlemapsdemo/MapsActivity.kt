@@ -89,7 +89,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         lifecycleScope.launch {
             delay(4000L)
-            map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
+//            map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
+//            map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
         }
     }
 }
