@@ -59,11 +59,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val losAngeles = LatLng(34.05447469544268, -118.2380027484249)
+        val newYork = LatLng(40.71312102585187, -73.99492995795815)
         map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles"))
 
         // There are 20 zoom levels
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
+//        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
 
         map.uiSettings.apply {
             isZoomControlsEnabled = true // This shows buttons
@@ -81,9 +82,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        map.setMinZoomPreference(15f)
 //        map.setMaxZoomPreference(17f)
 
+//        lifecycleScope.launch {
+//            delay(4000L)
+//            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+//        }
+
         lifecycleScope.launch {
             delay(4000L)
-            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+            map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
         }
     }
 }
