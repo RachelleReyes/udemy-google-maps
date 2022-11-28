@@ -6,15 +6,16 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
+import com.reyesrachelle.googlemapsdemo.misc.CameraAndViewport
+import com.reyesrachelle.googlemapsdemo.misc.CustomInfoAdapter
+import com.reyesrachelle.googlemapsdemo.misc.TypeAndStyle
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -57,21 +58,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
         // Add a marker in Sydney and move the camera
         val losAngeles = LatLng(34.05447469544268, -118.2380027484249)
-        val losAngeles2 = LatLng(34.09657501898418, -118.22544035564495)
         val newYork = LatLng(40.71312102585187, -73.99492995795815)
         val losAngelesMarker =
             map.addMarker(
                 MarkerOptions()
                     .position(losAngeles)
                     .title("Marker in Los Angeles")
-                    .snippet("Some random text")
-            )
-        val losAngelesMarker2 =
-            map.addMarker(
-                MarkerOptions()
-                    .position(losAngeles2)
-                    .title("Marker in Los Angeles")
-                    .zIndex(1f)
                     .snippet("Some random text")
             )
 
@@ -81,7 +73,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
             isZoomControlsEnabled = true // This shows buttons
         }
 
-        map.setOnMarkerClickListener(this)
+        map.setInfoWindowAdapter(CustomInfoAdapter(this))
+
         typeAndStyle.setMapStyle(map, this)
 
 //    lifecycleScope.launch {
@@ -89,13 +82,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 //        map.setOnMarkerClickListener(this)
 //    }
 
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        map.animateCamera(CameraUpdateFactory.zoomTo(17f), 2000, null)
-        marker.showInfoWindow()
-//        return false // Only default behavior will be applied
-        return true
     }
 
 

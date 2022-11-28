@@ -1,4 +1,4 @@
-package com.reyesrachelle.googlemapsdemo
+package com.reyesrachelle.googlemapsdemo.misc
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

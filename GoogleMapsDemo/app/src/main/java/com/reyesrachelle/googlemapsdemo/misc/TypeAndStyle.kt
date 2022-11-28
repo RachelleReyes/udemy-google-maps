@@ -1,10 +1,11 @@
-package com.reyesrachelle.googlemapsdemo
+package com.reyesrachelle.googlemapsdemo.misc
 
 import android.content.Context
 import android.util.Log
 import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.reyesrachelle.googlemapsdemo.R
 
 class TypeAndStyle {
 

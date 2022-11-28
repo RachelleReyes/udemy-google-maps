@@ -1,4 +1,4 @@
-package com.reyesrachelle.googlemapsdemo
+package com.reyesrachelle.googlemapsdemo.misc
 
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
