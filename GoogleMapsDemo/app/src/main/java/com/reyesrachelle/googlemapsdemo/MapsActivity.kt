@@ -1,13 +1,22 @@
 package com.reyesrachelle.googlemapsdemo
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
@@ -60,6 +69,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             map.addMarker(
                 MarkerOptions().position(losAngeles)
                     .title("Marker in Los Angeles")
+                    .icon(fromVectorToBitmap(R.drawable.ic_android, Color.parseColor("#00D176")))
+                    .flat(true)
             )
 
         // There are 20 zoom levels
@@ -75,5 +86,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        map.setOnMarkerClickListener(this)
 //    }
 
+    }
+
+    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
+        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources, id, null)
+        if (vectorDrawable == null) {
+            Log.d("MapsActivity", "Resource not found")
+            return BitmapDescriptorFactory.defaultMarker()
+        }
+
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        DrawableCompat.setTint(vectorDrawable, color)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }
