@@ -64,13 +64,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Add a marker in Sydney and move the camera
         val losAngeles = LatLng(34.05447469544268, -118.2380027484249)
+        val losAngeles2 = LatLng(34.09657501898418, -118.22544035564495)
         val newYork = LatLng(40.71312102585187, -73.99492995795815)
         val losAngelesMarker =
             map.addMarker(
-                MarkerOptions().position(losAngeles)
+                MarkerOptions()
+                    .position(losAngeles)
                     .title("Marker in Los Angeles")
-                    .icon(fromVectorToBitmap(R.drawable.ic_android, Color.parseColor("#00D176")))
-                    .flat(true)
+            )
+        val losAngelesMarker2 =
+            map.addMarker(
+                MarkerOptions()
+                    .position(losAngeles2)
+                    .title("Marker in Los Angeles")
+                    .zIndex(1f)
             )
 
         // There are 20 zoom levels
@@ -88,23 +95,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
-        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources, id, null)
-        if (vectorDrawable == null) {
-            Log.d("MapsActivity", "Resource not found")
-            return BitmapDescriptorFactory.defaultMarker()
-        }
 
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        DrawableCompat.setTint(vectorDrawable, color)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
 }
