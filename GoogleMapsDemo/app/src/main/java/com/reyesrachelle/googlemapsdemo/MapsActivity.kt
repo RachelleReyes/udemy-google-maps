@@ -74,19 +74,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         typeAndStyle.setMapStyle(map, this)
         lifecycleScope.launch {
             delay(4000L)
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles), 2000, object: GoogleMap.CancelableCallback {
-                override fun onFinish() {
-                    Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onCancel() {
-                    Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
-                }
-            })
+//            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles), 2000, object: GoogleMap.CancelableCallback {
+//                override fun onFinish() {
+//                    Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                override fun onCancel() {
+//                    Toast.makeText(this@MapsActivity, "Cancelled", Toast.LENGTH_SHORT).show()
+//                }
+//            })
 //            map.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
 //            map.animateCamera(CameraUpdateFactory.scrollBy(2000f, 0f), 2000, null)
 //            map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100), 2000, null)
 //            map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
+        }
+
+        onMapClicked()
+        onMapLongClicked()
+    }
+
+    private fun onMapClicked() {
+        map.setOnMapClickListener {
+            Toast.makeText(this, "Single click", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun onMapLongClicked() {
+        map.setOnMapLongClickListener {
+            map.addMarker(MarkerOptions().position(it).title("New Marker"))
+            Toast.makeText(this, "${it.longitude} ${it.latitude}", Toast.LENGTH_SHORT).show()
         }
     }
 }
