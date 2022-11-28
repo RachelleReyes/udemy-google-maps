@@ -1,27 +1,20 @@
 package com.reyesrachelle.googlemapsdemo
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -71,6 +64,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 MarkerOptions()
                     .position(losAngeles)
                     .title("Marker in Los Angeles")
+                    .snippet("Some random text")
             )
         val losAngelesMarker2 =
             map.addMarker(
@@ -78,6 +72,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .position(losAngeles2)
                     .title("Marker in Los Angeles")
                     .zIndex(1f)
+                    .snippet("Some random text")
             )
 
         // There are 20 zoom levels
@@ -86,6 +81,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isZoomControlsEnabled = true // This shows buttons
         }
 
+        map.setOnMarkerClickListener(this)
         typeAndStyle.setMapStyle(map, this)
 
 //    lifecycleScope.launch {
@@ -93,6 +89,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //        map.setOnMarkerClickListener(this)
 //    }
 
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        map.animateCamera(CameraUpdateFactory.zoomTo(17f), 2000, null)
+        marker.showInfoWindow()
+//        return false // Only default behavior will be applied
+        return true
     }
 
 
