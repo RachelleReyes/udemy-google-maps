@@ -2,6 +2,7 @@ package com.reyesrachelle.googlemapsdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -9,15 +10,17 @@ import androidx.lifecycle.lifecycleScope
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -61,8 +64,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val losAngeles = LatLng(34.05447469544268, -118.2380027484249)
         val newYork = LatLng(40.71312102585187, -73.99492995795815)
-        map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles"))
-
+        val losAngelesMarker = map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles"))
+        losAngelesMarker?.tag = "Restaurant"
         // There are 20 zoom levels
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
 //        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
@@ -74,6 +77,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         typeAndStyle.setMapStyle(map, this)
         lifecycleScope.launch {
             delay(4000L)
+//            losAngelesMarker?.remove()
 //            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles), 2000, object: GoogleMap.CancelableCallback {
 //                override fun onFinish() {
 //                    Toast.makeText(this@MapsActivity, "Finished", Toast.LENGTH_SHORT).show()
@@ -89,8 +93,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 //            map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
         }
 
-        onMapClicked()
-        onMapLongClicked()
+//        onMapClicked()
+//        onMapLongClicked()
+
+        map.setOnMarkerClickListener(this)
     }
 
     private fun onMapClicked() {
@@ -104,5 +110,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             map.addMarker(MarkerOptions().position(it).title("New Marker"))
             Toast.makeText(this, "${it.longitude} ${it.latitude}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        if (marker!=null) {
+            Log.d("Marker", marker.tag as String)
+        } else {
+            Log.d("Marker", "Empty")
+        }
+        return true // Returning true doesn't show the info window in the marker
     }
 }
