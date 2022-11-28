@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -20,7 +21,7 @@ import com.reyesrachelle.googlemapsdemo.databinding.ActivityMapsBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener, OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -64,7 +65,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         // Add a marker in Sydney and move the camera
         val losAngeles = LatLng(34.05447469544268, -118.2380027484249)
         val newYork = LatLng(40.71312102585187, -73.99492995795815)
-        val losAngelesMarker = map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles"))
+        val losAngelesMarker = map.addMarker(MarkerOptions().position(losAngeles).title("Marker in Los Angeles").draggable(true))
         losAngelesMarker?.tag = "Restaurant"
         // There are 20 zoom levels
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
@@ -75,8 +76,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         }
 
         typeAndStyle.setMapStyle(map, this)
-        lifecycleScope.launch {
-            delay(4000L)
+
+        map.setOnMarkerDragListener(this)
+
+//        lifecycleScope.launch {
+//            delay(4000L)
 //            losAngelesMarker?.remove()
 //            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles), 2000, object: GoogleMap.CancelableCallback {
 //                override fun onFinish() {
@@ -95,9 +99,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
 //        onMapClicked()
 //        onMapLongClicked()
-
-        map.setOnMarkerClickListener(this)
-    }
+//
+//        map.setOnMarkerClickListener(this)
+//    }
 
     private fun onMapClicked() {
         map.setOnMapClickListener {
@@ -119,5 +123,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
             Log.d("Marker", "Empty")
         }
         return true // Returning true doesn't show the info window in the marker
+    }
+
+    override fun onMarkerDrag(p0: Marker) {
+        Log.d("Drag", "Drag")
+    }
+
+    override fun onMarkerDragEnd(p0: Marker) {
+        Log.d("Drag", "End")
+    }
+
+    override fun onMarkerDragStart(p0: Marker) {
+        Log.d("Drag", "Start")
     }
 }
